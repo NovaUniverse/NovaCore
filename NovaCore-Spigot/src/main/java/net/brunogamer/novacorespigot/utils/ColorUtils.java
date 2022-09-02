@@ -1,4 +1,4 @@
-package net.zeeraa.novacore.spigot.utils;
+package net.brunogamer.novacorespigot.utils;
 
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Color;
