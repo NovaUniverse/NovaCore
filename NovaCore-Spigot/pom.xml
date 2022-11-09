@@ -204,7 +204,7 @@
 		<dependency>
 			<groupId>fr.minuskube</groupId>
 			<artifactId>netherboard-bukkit</artifactId>
-			<version>1.2.2</version>
+			<version>1.2.3</version>
 			<scope>provided</scope>
 		</dependency>
 
