@@ -802,8 +802,12 @@ public abstract class VersionIndependentUtils {
 		Bukkit.getServer().getOnlinePlayers().stream().filter(player -> player.getWorld().equals(world)).forEach(player -> this.sendTitle(player, title, subtitle, fadeIn, stay, fadeOut));
 	}
 	
-	public Color bungeecordChatColorToBukkitColor(ChatColor color) {
-		return DefaultBunceecordColorMapper.getColorOfChatcolor(color);
+	public Color bungeecordChatColorToJavaColor(ChatColor color) {
+		return DefaultBungeecordColorMapper.getColorOfChatColor(color);
+	}
+
+	public org.bukkit.ChatColor bungeecordChatColorToBukkitChatColor(ChatColor color) {
+		return DefaultBungeecordColorMapper.getBukkitChatColorOfBungeeChatColor(color);
 	}
 
 	public abstract void displayTotem(Player player);

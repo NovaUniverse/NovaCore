@@ -17,7 +17,7 @@ public class ChatColorRGBMapper {
 
 	public static RGBColorData chatColorToRGBColorData(net.md_5.bungee.api.ChatColor color, Color fallback) {
 		if (!NovaCore.getInstance().isNoNMSMode()) {
-			return new RGBColorData(VersionIndependentUtils.get().bungeecordChatColorToBukkitColor(color));
+			return new RGBColorData(VersionIndependentUtils.get().bungeecordChatColorToJavaColor(color));
 		}
 
 		return ChatColorRGBMapper.colorNameToRGBColorData(color.getName(), fallback);

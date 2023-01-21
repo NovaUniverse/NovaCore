@@ -4,8 +4,8 @@ import java.awt.Color;
 
 import net.md_5.bungee.api.ChatColor;
 
-public class DefaultBunceecordColorMapper {
-	public static Color getColorOfChatcolor(ChatColor color) {
+public class DefaultBungeecordColorMapper {
+	public static Color getColorOfChatColor(ChatColor color) {
 		switch (color.name().toLowerCase()) {
 		case "black":
 			return new Color(0, 0, 0);
@@ -58,5 +58,10 @@ public class DefaultBunceecordColorMapper {
 		default:
 			return new Color(255, 255, 255);
 		}
+	}
+
+	public static org.bukkit.ChatColor getBukkitChatColorOfBungeeChatColor(ChatColor color) {
+
+		return org.bukkit.ChatColor.valueOf(color.name());
 	}
 }
