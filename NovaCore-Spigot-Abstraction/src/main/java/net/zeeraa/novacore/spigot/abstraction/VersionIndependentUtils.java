@@ -809,4 +809,8 @@ public abstract class VersionIndependentUtils {
 	public abstract void displayTotem(Player player);
 
 	public abstract void displayCustomTotem(Player player, int cmd);
+
+	public abstract void setMarker(ArmorStand stand, boolean value);
+
+	public abstract boolean isMarker(ArmorStand stand);
 }

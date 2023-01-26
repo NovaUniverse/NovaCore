@@ -58,13 +58,7 @@ import org.bukkit.craftbukkit.v1_12_R1.entity.CraftFallingBlock;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
 import org.bukkit.craftbukkit.v1_12_R1.util.CraftMagicNumbers;
-import org.bukkit.entity.Creature;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.FallingBlock;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.ThrownPotion;
+import org.bukkit.entity.*;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -1082,5 +1076,15 @@ public class VersionIndependentUtils extends net.zeeraa.novacore.spigot.abstract
 	@Override
 	public void displayCustomTotem(Player player, int cmd) {
 		AbstractionLogger.getLogger().error("VersionIndependentUtils", "Current version does not have CustomModelData support.");
+	}
+
+	@Override
+	public void setMarker(ArmorStand stand, boolean marker) {
+		stand.setMarker(marker);
+	}
+
+	@Override
+	public boolean isMarker(ArmorStand stand) {
+		return stand.isMarker();
 	}
 }
