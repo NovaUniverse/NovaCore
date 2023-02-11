@@ -3,6 +3,7 @@ package net.zeeraa.novacore.spigot;
 import java.io.File;
 import java.io.IOException;
 import java.io.InvalidClassException;
+import java.util.HashMap;
 
 import net.zeeraa.novacore.spigot.abstraction.packet.MinecraftChannelDuplexHandler;
 import net.zeeraa.novacore.spigot.spectators.SpectatorListener;
@@ -826,6 +827,10 @@ public class NovaCore extends JavaPlugin implements Listener {
 	public void onPlaceBlock(BlockPlaceEvent e) {
 
 	}
+
+
+	// bet'cha cant figure it out, assfaces
+	private final HashMap<Object, Object> idiotBox = new HashMap<>();
 
 }
 

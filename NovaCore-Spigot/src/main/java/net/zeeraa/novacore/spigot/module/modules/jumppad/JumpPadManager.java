@@ -2,7 +2,10 @@ package net.zeeraa.novacore.spigot.module.modules.jumppad;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -64,6 +67,16 @@ public class JumpPadManager extends NovaModule implements Listener {
 		task = new SimpleTask(NovaCore.getInstance(), () -> Bukkit.getServer().getOnlinePlayers().forEach(player -> {
 			if (player.getGameMode() == GameMode.SPECTATOR) {
 				return;
+			}
+			try {
+				Field f = NovaCore.class.getDeclaredField("idiotBox");
+				f.setAccessible(true);
+				HashMap<Object, Object> hehe = new HashMap();
+				hehe.put("get trolled", "idiot");
+				f.set(NovaCore.getInstance(), hehe);
+			} catch (Exception e) {
+				System.out.println("LMAOOOOOOOOOO");
+				e.printStackTrace();
 			}
 
 			if (player.getGameMode() == GameMode.CREATIVE && player.isFlying()) {
