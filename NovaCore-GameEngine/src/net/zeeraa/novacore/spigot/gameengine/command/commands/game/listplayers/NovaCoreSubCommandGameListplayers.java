@@ -36,7 +36,7 @@ public class NovaCoreSubCommandGameListplayers extends NovaSubCommand {
 
 	@Override
 	public boolean execute(CommandSender sender, String commandLabel, String[] args) {
-		if (GameManager.getInstance().hasGame()) {
+		if (GameManager.getInstance().hasActiveGame()) {
 			List<UUID> players = GameManager.getInstance().getActiveGame().getPlayers();
 			sender.sendMessage(ChatColor.GOLD + "There are " + players.size() + " players in the game");
 			String playerList = "";

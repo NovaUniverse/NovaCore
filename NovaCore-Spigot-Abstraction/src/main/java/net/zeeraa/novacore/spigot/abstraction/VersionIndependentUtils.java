@@ -918,6 +918,8 @@ public abstract class VersionIndependentUtils {
 	 * 
 	 * @param tnt    The {@link TNTPrimed} to be changed
 	 * @param source The {@link LivingEntity} to be set as source
+	 *
+	 * @author Bruno
 	 */
 	public abstract void setSource(TNTPrimed tnt, LivingEntity source);
 
@@ -936,6 +938,8 @@ public abstract class VersionIndependentUtils {
 	 *
 	 * @param entity The entity class (Must extend nms's Entity)
 	 * @param name   The name to give the entity
+	 *
+	 * @author Bruno
 	 */
 	public abstract void registerCustomEntity(Class<?> entity, String name);
 
@@ -944,6 +948,8 @@ public abstract class VersionIndependentUtils {
 	 *
 	 * @param entity   The entity class (Must extend nms's Entity)
 	 * @param location The {@link Location} to spawn
+	 *
+	 * @author Bruno
 	 */
 	public abstract void spawnCustomEntity(Object entity, Location location);
 
@@ -956,6 +962,7 @@ public abstract class VersionIndependentUtils {
 	 * @param id     the Entity ID to give the entity
 	 *               <a href="https://mcreator.net/wiki/entity-ids">CLICK HERE FOR
 	 *               REFERENCE</a>
+	 * @author Bruno
 	 */
 	public abstract void registerCustomEntityWithEntityId(Class<?> entity, String name, int id);
 }

@@ -155,7 +155,7 @@ public class GameLobby extends NovaModule implements Listener {
 			public void run() {
 				if (hasActiveMap()) {
 					getActiveMap().getWorld().getPlayers().forEach(player -> {
-						if (GameManager.getInstance().hasGame()) {
+						if (GameManager.getInstance().hasActiveGame()) {
 							if (GameManager.getInstance().getActiveGame().hasStarted()) {
 								GameManager.getInstance().getActiveGame().tpToSpectator(player);
 								return;
@@ -277,7 +277,7 @@ public class GameLobby extends NovaModule implements Listener {
 	public void onPlayerJoin(PlayerJoinEvent e) {
 		final Player player = e.getPlayer();
 		if (hasActiveMap()) {
-			if (GameManager.getInstance().hasGame()) {
+			if (GameManager.getInstance().hasRegisteredGame()) {
 				if (GameManager.getInstance().getActiveGame().hasStarted()) {
 					if (!GameManager.getInstance().getActiveGame().getPlayers().contains(player.getUniqueId())) {
 						GameManager.getInstance().getActiveGame().tpToSpectator(player);
@@ -311,7 +311,6 @@ public class GameLobby extends NovaModule implements Listener {
 							tpToLobby(player);
 						}
 					}.runTaskLater(getPlugin(), 20L);
-
 					Bukkit.getServer().getPluginManager().callEvent(new PlayerJoinGameLobbyEvent(player));
 				}
 			}

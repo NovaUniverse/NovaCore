@@ -20,7 +20,6 @@ public class InfiniteFood extends MapModule implements Listener {
 	@Override
 	public void onGameStart(Game game) {
 		Bukkit.getServer().getPluginManager().registerEvents(this, game.getPlugin());
-		Bukkit.getServer().getOnlinePlayers().forEach(p -> p.setFoodLevel(20));
 	}
 
 	@Override
@@ -31,6 +30,11 @@ public class InfiniteFood extends MapModule implements Listener {
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerJoin(PlayerJoinEvent e) {
 		e.getPlayer().setFoodLevel(20);
+	}
+
+	@EventHandler (priority = EventPriority.HIGHEST)
+	public void onFoodChange(FoodLevelChangeEvent e) {
+		e.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)

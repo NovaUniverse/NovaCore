@@ -119,7 +119,7 @@ public abstract class Game {
 
 	private Plugin plugin;
 
-	public Game(Plugin plugin) {
+	public Game(Plugin plugin, boolean autoLoad) {
 		this.players = new ArrayList<>();
 		this.triggers = new ArrayList<>();
 		this.world = null;
@@ -130,6 +130,7 @@ public abstract class Game {
 		this.beginEventCalled = false;
 		this.plugin = plugin;
 		this.dropItemsOnCombatLog = false;
+		GameManager.getInstance().registerGame(this);
 		this.winCheckTask = new SimpleTask(NovaCore.getInstance(), () -> {
 			if (!autoWinnerCheckCompleted) {
 				if (autoEndGame()) {
@@ -137,7 +138,11 @@ public abstract class Game {
 				}
 			}
 		}, 5L);
+		if (autoLoad) {
+			GameManager.getInstance().loadGame(this);
+		}
 	}
+
 
 	/**
 	 * Check if a player is in the game

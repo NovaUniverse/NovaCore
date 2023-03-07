@@ -2,6 +2,7 @@ package net.zeeraa.novacore.spigot.gameengine.command.commands.game.debug;
 
 import java.io.IOException;
 
+import net.zeeraa.novacore.spigot.gameengine.module.modules.game.Game;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -38,8 +39,17 @@ public class GameDebugCommand extends NovaSubCommand {
 
 		if (GameManager.getInstance().isEnabled()) {
 			message += ChatColor.GREEN + "GameManager is enabled\n";
+			if (GameManager.getInstance().hasRegisteredGame()) {
+				message += ChatColor.GOLD + "Registered games: " + ChatColor.AQUA;
+				for (Game g : GameManager.getInstance().getRegisteredGames()) {
+					message += (g.getDisplayName() + "(" + g.getName() + "), ");
+				}
+				message = message.substring(0,message.length() - 2);
+				message += "\n";
+			}
 
-			if (GameManager.getInstance().hasGame()) {
+
+			if (GameManager.getInstance().hasActiveGame()) {
 				message += ChatColor.GOLD + "Loaded game name: " + ChatColor.AQUA + GameManager.getInstance().getActiveGame().getName() + "\n";
 				message += ChatColor.GOLD + "Display name: " + ChatColor.AQUA + GameManager.getInstance().getActiveGame().getDisplayName() + "\n";
 				message += ChatColor.GOLD + "Class: " + ChatColor.AQUA + GameManager.getInstance().getActiveGame().getClass().getName() + "\n";

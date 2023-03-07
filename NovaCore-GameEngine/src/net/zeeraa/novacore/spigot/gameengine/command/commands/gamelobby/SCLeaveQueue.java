@@ -31,7 +31,7 @@ public class SCLeaveQueue extends NovaSubCommand {
 	@Override
 	public boolean execute(CommandSender sender, String commandLabel, String[] args) {
 		if (ModuleManager.isEnabled(GameManager.class)) {
-			if (GameManager.getInstance().hasGame()) {
+			if (GameManager.getInstance().hasActiveGame()) {
 				if (!GameManager.getInstance().getActiveGame().hasStarted()) {
 					if (ModuleManager.isEnabled(GameLobby.class)) {
 						Player player = (Player) sender;

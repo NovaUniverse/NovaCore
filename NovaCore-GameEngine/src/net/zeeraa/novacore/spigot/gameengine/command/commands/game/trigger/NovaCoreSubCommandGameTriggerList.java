@@ -26,7 +26,7 @@ public class NovaCoreSubCommandGameTriggerList extends NovaSubCommand {
 
 	@Override
 	public boolean execute(CommandSender sender, String commandLabel, String[] args) {
-		if (GameManager.getInstance().hasGame()) {
+		if (GameManager.getInstance().hasActiveGame()) {
 			String message = "";
 
 			message += ChatColor.GOLD + "Color codes:\n";

@@ -26,8 +26,8 @@ import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.GameMapData
 public abstract class MapGame extends Game {
 	private GameMap activeMap;
 
-	public MapGame(Plugin plugin) {
-		super(plugin);
+	public MapGame(Plugin plugin, boolean autoLoad) {
+		super(plugin, autoLoad);
 
 		this.activeMap = null;
 	}

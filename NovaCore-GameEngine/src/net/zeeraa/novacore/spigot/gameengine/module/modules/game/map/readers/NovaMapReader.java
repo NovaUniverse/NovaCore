@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.zeeraa.novacore.spigot.gameengine.module.modules.game.Game;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,7 +32,7 @@ public class NovaMapReader extends MapReader {
 	}
 
 	@Override
-	public GameMapData readMap(JSONObject json, File worldDirectory) {
+	public GameMapData readMap(JSONObject json, File worldDirectory, Game owner) {
 		String mapName = json.getString("map_name");
 		String displayName = json.getString("display_name");
 		String worldFileName = json.getString("world_file");
@@ -134,6 +135,6 @@ public class NovaMapReader extends MapReader {
 			}
 		}
 
-		return new GameMapData(mapModules, starterLocations, spectatorLocation, mapName, displayName, description, worldFile, enabled, holograms);
+		return new GameMapData(mapModules, starterLocations, spectatorLocation, mapName, displayName, description, worldFile, enabled, holograms, owner);
 	}
 }

@@ -34,7 +34,7 @@ public class NovaCoreSubCommandStartGame extends NovaSubCommand {
 	@Override
 	public boolean execute(CommandSender sender, String commandLabel, String[] args) {
 		if (GameManager.getInstance().isEnabled()) {
-			if (GameManager.getInstance().hasGame()) {
+			if (GameManager.getInstance().hasActiveGame()) {
 				if (!GameManager.getInstance().getActiveGame().hasStarted()) {
 					if (GameManager.getInstance().getActiveGame().canStart()) {
 						if (GameManager.getInstance().hasCountdown()) {

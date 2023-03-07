@@ -46,7 +46,7 @@ public abstract class NovaModule {
 	private String name;
 	private Plugin plugin = null;
 
-	private List<Class<? extends NovaModule>> dependencies = new ArrayList<Class<? extends NovaModule>>();
+	private List<Class<? extends NovaModule>> dependencies = new ArrayList<>();
 
 	private String missingPluginName;
 

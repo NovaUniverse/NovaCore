@@ -27,7 +27,7 @@ public class NovaCoreSubCommandGameTriggerStop extends NovaSubCommand {
 
 	@Override
 	public boolean execute(CommandSender sender, String commandLabel, String[] args) {
-		if (GameManager.getInstance().hasGame()) {
+		if (GameManager.getInstance().hasActiveGame()) {
 			if (args.length == 0) {
 				sender.sendMessage(ChatColor.RED + "Please provide a trigger. You can use tab to autocomplete avaliable trigger names");
 			} else {
@@ -62,7 +62,7 @@ public class NovaCoreSubCommandGameTriggerStop extends NovaSubCommand {
 	public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
 		List<String> result = new ArrayList<String>();
 
-		if (GameManager.getInstance().hasGame()) {
+		if (GameManager.getInstance().hasActiveGame()) {
 			for (GameTrigger trigger : GameManager.getInstance().getActiveGame().getTriggers()) {
 				if (trigger instanceof ScheduledGameTrigger) {
 					if (((ScheduledGameTrigger) trigger).isRunning()) {

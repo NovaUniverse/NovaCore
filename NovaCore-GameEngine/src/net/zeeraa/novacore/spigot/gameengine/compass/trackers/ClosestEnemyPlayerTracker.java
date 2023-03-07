@@ -18,7 +18,7 @@ import net.zeeraa.novacore.spigot.teams.TeamManager;
 public class ClosestEnemyPlayerTracker implements CompassTrackerTarget {
 	@Override
 	public CompassTarget getCompassTarget(Player player) {
-		if (GameManager.getInstance().hasGame()) {
+		if (GameManager.getInstance().hasActiveGame()) {
 			List<UUID> players = new ArrayList<>(GameManager.getInstance().getActiveGame().getPlayers());
 
 			// Ignore self
@@ -37,7 +37,7 @@ public class ClosestEnemyPlayerTracker implements CompassTrackerTarget {
 
 				if (p != null) {
 					if (p.isOnline()) {
-						if (GameManager.getInstance().hasGame()) {
+						if (GameManager.getInstance().hasActiveGame()) {
 							if (!GameManager.getInstance().getActiveGame().getPlayers().contains(p.getUniqueId())) {
 								continue;
 							}

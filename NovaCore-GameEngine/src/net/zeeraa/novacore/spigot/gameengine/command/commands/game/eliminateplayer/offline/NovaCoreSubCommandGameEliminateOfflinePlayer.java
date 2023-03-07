@@ -27,7 +27,7 @@ public class NovaCoreSubCommandGameEliminateOfflinePlayer extends NovaSubCommand
 
 	@Override
 	public boolean execute(CommandSender sender, String commandLabel, String[] args) {
-		if (GameManager.getInstance().hasGame()) {
+		if (GameManager.getInstance().hasActiveGame()) {
 			if (GameManager.getInstance().getActiveGame().isRunning()) {
 				if (args.length > 0) {
 					sender.sendMessage(ChatColor.AQUA + "Please wait while we try to fetch the uuid of that player from the mojang api...");

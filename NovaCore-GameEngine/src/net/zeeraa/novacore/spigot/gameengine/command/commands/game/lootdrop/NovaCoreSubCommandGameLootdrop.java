@@ -33,7 +33,7 @@ public class NovaCoreSubCommandGameLootdrop extends NovaSubCommand {
 
 	@Override
 	public boolean execute(CommandSender sender, String commandLabel, String[] args) {
-		if (GameManager.getInstance().hasGame()) {
+		if (GameManager.getInstance().hasActiveGame()) {
 			if (GameManager.getInstance().getActiveGame() instanceof MapGame) {
 				MapGame game = (MapGame) GameManager.getInstance().getActiveGame();
 

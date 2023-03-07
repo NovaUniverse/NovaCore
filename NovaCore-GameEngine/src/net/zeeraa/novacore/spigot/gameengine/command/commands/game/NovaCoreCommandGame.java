@@ -1,5 +1,6 @@
 package net.zeeraa.novacore.spigot.gameengine.command.commands.game;
 
+import net.zeeraa.novacore.spigot.gameengine.command.commands.game.setgame.NovaCoreSubCommandSetGame;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.PermissionDefault;
@@ -46,6 +47,7 @@ public class NovaCoreCommandGame extends NovaCommand {
 		this.addSubCommand(new NovaCoreSubCommandResetCountdownGame());
 		this.addSubCommand(new NovaCoreSubCommandGameTrigger());
 		this.addSubCommand(new GameDebugCommand());
+		this.addSubCommand(new NovaCoreSubCommandSetGame());
 
 		this.setEmptyTabMode(true);
 		this.setFilterAutocomplete(true);

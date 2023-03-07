@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import net.zeeraa.novacore.spigot.gameengine.module.modules.game.Game;
 import org.bukkit.World;
 
 import net.zeeraa.novacore.commons.log.Log;
@@ -29,7 +30,9 @@ public class GameMapData extends AbstractMapData {
 
 	private boolean enabled;
 
-	public GameMapData(List<MapModule> mapModules, List<LocationData> starterLocations, LocationData spectatorLocation, String mapName, String displayName, String description, File worldFile, boolean enabled, List<HologramData> holograms) {
+	private Game owner;
+
+	public GameMapData(List<MapModule> mapModules, List<LocationData> starterLocations, LocationData spectatorLocation, String mapName, String displayName, String description, File worldFile, boolean enabled, List<HologramData> holograms, Game owner) {
 		super(mapName, displayName, description, worldFile, holograms);
 
 		this.mapModules = mapModules;
@@ -38,6 +41,8 @@ public class GameMapData extends AbstractMapData {
 		this.spectatorLocation = spectatorLocation;
 
 		this.enabled = enabled;
+
+		this.owner = owner;
 	}
 
 	/**
@@ -72,6 +77,10 @@ public class GameMapData extends AbstractMapData {
 
 	public MapModule getMapModule(Class<? extends MapModule> clazz) {
 		return mapModules.stream().filter(module -> clazz.isAssignableFrom(module.getClass())).findFirst().orElse(null);
+	}
+
+	public Game getOwner() {
+		return owner;
 	}
 
 	/**

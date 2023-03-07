@@ -73,7 +73,7 @@ public abstract class GameCountdown {
 	protected void onCountdownFinished() throws IOException {
 		this.finished = true;
 		if (GameManager.getInstance().isEnabled()) {
-			if (GameManager.getInstance().hasGame()) {
+			if (GameManager.getInstance().hasActiveGame()) {
 				if (!GameManager.getInstance().getActiveGame().hasStarted()) {
 					if (GameLobby.getInstance().isEnabled()) {
 						GameLobby.getInstance().startGame();

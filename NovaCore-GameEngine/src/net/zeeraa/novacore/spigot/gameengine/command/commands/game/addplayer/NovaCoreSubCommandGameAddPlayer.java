@@ -27,7 +27,7 @@ public class NovaCoreSubCommandGameAddPlayer extends NovaSubCommand {
 
 	@Override
 	public boolean execute(CommandSender sender, String commandLabel, String[] args) {
-		if (GameManager.getInstance().hasGame()) {
+		if (GameManager.getInstance().hasActiveGame()) {
 			if (GameManager.getInstance().getActiveGame().isRunning()) {
 				if (args.length > 0) {
 					Player player = Bukkit.getServer().getPlayer(args[0]);
@@ -61,7 +61,7 @@ public class NovaCoreSubCommandGameAddPlayer extends NovaSubCommand {
 	@Override
 	public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
 		List<String> result = new ArrayList<>();
-		if (GameManager.getInstance().hasGame()) {
+		if (GameManager.getInstance().hasActiveGame()) {
 			if (GameManager.getInstance().getActiveGame().isRunning()) {
 				for (Player player : Bukkit.getServer().getOnlinePlayers()) {
 					if (!GameManager.getInstance().getActiveGame().getPlayers().contains(player.getUniqueId())) {

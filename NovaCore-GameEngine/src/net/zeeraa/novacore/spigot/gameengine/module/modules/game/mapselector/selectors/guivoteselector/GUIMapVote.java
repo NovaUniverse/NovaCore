@@ -1,15 +1,15 @@
 package net.zeeraa.novacore.spigot.gameengine.module.modules.game.mapselector.selectors.guivoteselector;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
-
+import net.zeeraa.novacore.commons.log.Log;
+import net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils;
+import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentSound;
+import net.zeeraa.novacore.spigot.gameengine.module.modules.game.GameManager;
+import net.zeeraa.novacore.spigot.gameengine.module.modules.game.events.GameStartEvent;
+import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.GameMapData;
+import net.zeeraa.novacore.spigot.gameengine.module.modules.game.mapselector.MapSelector;
+import net.zeeraa.novacore.spigot.gameengine.module.modules.gamelobby.events.PlayerJoinGameLobbyEvent;
+import net.zeeraa.novacore.spigot.language.LanguageManager;
+import net.zeeraa.novacore.spigot.module.modules.customitems.CustomItemManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -27,16 +27,15 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import net.zeeraa.novacore.commons.log.Log;
-import net.zeeraa.novacore.spigot.abstraction.VersionIndependentUtils;
-import net.zeeraa.novacore.spigot.abstraction.enums.VersionIndependentSound;
-import net.zeeraa.novacore.spigot.gameengine.module.modules.game.GameManager;
-import net.zeeraa.novacore.spigot.gameengine.module.modules.game.events.GameStartEvent;
-import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.GameMapData;
-import net.zeeraa.novacore.spigot.gameengine.module.modules.game.mapselector.MapSelector;
-import net.zeeraa.novacore.spigot.gameengine.module.modules.gamelobby.events.PlayerJoinGameLobbyEvent;
-import net.zeeraa.novacore.spigot.language.LanguageManager;
-import net.zeeraa.novacore.spigot.module.modules.customitems.CustomItemManager;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.UUID;
 
 public class GUIMapVote extends MapSelector implements Listener {
 	private static GUIMapVote instance;
@@ -68,7 +67,6 @@ public class GUIMapVote extends MapSelector implements Listener {
 	}
 
 	public void showPlayer(Player player) {
-		if (!playerVoteInventory.containsKey(player.getUniqueId())) {
 			List<GameMapData> maps = getMaps();
 
 			int slots = 9;
@@ -81,7 +79,6 @@ public class GUIMapVote extends MapSelector implements Listener {
 			playerVoteInventory.put(player.getUniqueId(), voteInventory);
 
 			this.updateInventory(player);
-		}
 
 		player.openInventory(playerVoteInventory.get(player.getUniqueId()));
 	}
@@ -196,12 +193,13 @@ public class GUIMapVote extends MapSelector implements Listener {
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerJoinGameLobby(PlayerJoinGameLobbyEvent e) {
+		// got a wierd glitch here where it dupes?
 		e.getPlayer().getInventory().addItem(CustomItemManager.getInstance().getCustomItemStack(GUIMapVoteMenuIcon.class, e.getPlayer()));
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onInventoryClick(InventoryClickEvent e) {
-		if (GameManager.getInstance().hasGame()) {
+		if (GameManager.getInstance().hasActiveGame()) {
 			if (GameManager.getInstance().getActiveGame().hasStarted()) {
 				// Prevent spectators in game from opening gui
 				return;

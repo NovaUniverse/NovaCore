@@ -48,7 +48,7 @@ public class GUIMapVoteMenuIcon extends CustomItem {
 	@Override
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-			if (GameManager.getInstance().hasGame()) {
+			if (GameManager.getInstance().hasActiveGame()) {
 				if (GameManager.getInstance().getActiveGame().hasStarted()) {
 					return;
 				}

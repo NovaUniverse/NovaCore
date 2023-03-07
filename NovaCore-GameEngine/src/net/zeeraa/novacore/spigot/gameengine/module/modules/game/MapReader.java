@@ -23,9 +23,10 @@ public abstract class MapReader {
 	 * 
 	 * @param json           The {@link JSONObject} to read
 	 * @param worldDirectory The directory containing the worlds
+	 * @param owner          The {@link Game} owner of the map
 	 * @return Instance of the {@link GameMapData} or <code>null</code> on failure
 	 */
-	public abstract GameMapData readMap(JSONObject json, File worldDirectory);
+	public abstract GameMapData readMap(JSONObject json, File worldDirectory, Game owner);
 
 	public String getLoaderName() {
 		return this.loaderName;

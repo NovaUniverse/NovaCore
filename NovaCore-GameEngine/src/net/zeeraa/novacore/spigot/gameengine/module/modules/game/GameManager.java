@@ -1,37 +1,5 @@
 package net.zeeraa.novacore.spigot.gameengine.module.modules.game;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
-import org.apache.commons.io.FilenameUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.HumanEntity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
-import org.bukkit.entity.Tameable;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.json.JSONObject;
-
 import net.md_5.bungee.api.ChatColor;
 import net.zeeraa.novacore.commons.log.Log;
 import net.zeeraa.novacore.commons.tasks.Task;
@@ -56,6 +24,7 @@ import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.readers.Leg
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.map.readers.NovaMapReader;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.mapselector.MapSelector;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.mapselector.selectors.RandomMapSelector;
+import net.zeeraa.novacore.spigot.gameengine.module.modules.game.mapselector.selectors.guivoteselector.MapVoteInventoryHolder;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.messages.GameStartFailureMessage;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.messages.PlayerEliminationMessage;
 import net.zeeraa.novacore.spigot.gameengine.module.modules.game.messages.TeamEliminationMessage;
@@ -69,6 +38,39 @@ import net.zeeraa.novacore.spigot.module.NovaModule;
 import net.zeeraa.novacore.spigot.module.modules.multiverse.MultiverseManager;
 import net.zeeraa.novacore.spigot.tasks.SimpleTask;
 import net.zeeraa.novacore.spigot.utils.PlayerUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Arrow;
+import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
+import org.bukkit.entity.Tameable;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Module used to manage games and maps
@@ -77,6 +79,8 @@ import net.zeeraa.novacore.spigot.utils.PlayerUtils;
  */
 public class GameManager extends NovaModule implements Listener {
 	private Game activeGame;
+
+	private List<Game> registeredGames;
 
 	private HashMap<UUID, EliminationTask> eliminationTasks;
 
@@ -136,6 +140,9 @@ public class GameManager extends NovaModule implements Listener {
 		this.addDependency(MultiverseManager.class);
 
 		this.activeGame = null;
+
+		this.registeredGames = new ArrayList<>();
+
 		this.eliminationTasks = new HashMap<>();
 
 		this.countdown = new DefaultGameCountdown();
@@ -182,6 +189,10 @@ public class GameManager extends NovaModule implements Listener {
 	 */
 	public Map<String, GameMapData> getAllLoadedMaps() {
 		return loadedMaps;
+	}
+
+	public List<GameMapData> getLoadedMapsForActiveGame() {
+		return loadedMaps.values().stream().filter(mapData -> mapData.getOwner().equals(activeGame)).collect(Collectors.toList());
 	}
 
 	/**
@@ -246,7 +257,7 @@ public class GameManager extends NovaModule implements Listener {
 			return this.getDisplayNameOverride();
 		}
 
-		if (this.hasGame()) {
+		if (this.hasActiveGame()) {
 			return this.getActiveGame().getDisplayName();
 		}
 
@@ -376,6 +387,15 @@ public class GameManager extends NovaModule implements Listener {
 		return mapSelector;
 	}
 
+	public Game getRegisteredGame(String gameName) {
+		if (registeredGames.stream().anyMatch(game -> game.getName().equals(gameName))) {
+			return registeredGames.stream().filter(game -> game.getName().equals(gameName)).findFirst().orElse(null);
+		} else {
+			Log.error("GameManager", "Couldn't find any game with name \"" + gameName + "\"");
+			return null;
+		}
+	}
+
 	/**
 	 * Set the map selector to use.
 	 * <p>
@@ -386,6 +406,9 @@ public class GameManager extends NovaModule implements Listener {
 	 * @param mapSelector The {@link MapSelector} to use
 	 */
 	public void setMapSelector(MapSelector mapSelector) {
+		if (this.mapSelector instanceof Listener) {
+			HandlerList.unregisterAll((Listener) this.mapSelector);
+		}
 		this.mapSelector = mapSelector;
 	}
 
@@ -406,7 +429,7 @@ public class GameManager extends NovaModule implements Listener {
 	 * @return <code>true</code> if the player is in the game
 	 */
 	public boolean isInGame(UUID player) {
-		if (hasGame()) {
+		if (hasActiveGame()) {
 			return getActiveGame().getPlayers().contains(player);
 		}
 
@@ -419,14 +442,15 @@ public class GameManager extends NovaModule implements Listener {
 	 * 
 	 * @param directory      Directory to scan
 	 * @param worldDirectory The directory containing the worlds
+	 * @param owner          The {@link Game} owner of the map
 	 * @since 2.0.0
 	 */
-	public void readMapsFromFolder(File directory, File worldDirectory) {
+	public void readMapsFromFolder(File directory, File worldDirectory, Game owner) {
 		Log.info("GameManager", "Scanning folder " + directory.getName() + " for maps");
 		for (File file : directory.listFiles()) {
 			if (FilenameUtils.getExtension(file.getName()).equalsIgnoreCase("json")) {
 				if (!file.isDirectory()) {
-					this.readMapFromFile(file, worldDirectory);
+					this.readMapFromFile(file, worldDirectory, owner);
 				}
 			}
 		}
@@ -437,18 +461,19 @@ public class GameManager extends NovaModule implements Listener {
 	 * active {@link MapSelector} defined by {@link GameManager#getMapSelector()}
 	 * <p>
 	 * This is the delayed version of
-	 * {@link GameManager#readMapsFromFolder(File, File)}, this will wait for the
+	 * {@link GameManager#readMapsFromFolder(File, File, Game)}, this will wait for the
 	 * server to load so that modules from external plugins can be used in the game
 	 * 
 	 * @param directory      Directory to scan
 	 * @param worldDirectory The directory containing the worlds
+	 * @param owner          The {@link Game} owner of the map
 	 * @since 2.0.0
 	 */
-	public void readMapsFromFolderDelayed(File directory, File worldDirectory) {
+	public void readMapsFromFolderDelayed(File directory, File worldDirectory, Game owner) {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				readMapsFromFolder(directory, worldDirectory);
+				readMapsFromFolder(directory, worldDirectory, owner);
 			}
 		}.runTaskLater(NovaCore.getInstance(), 0L);
 	}
@@ -459,10 +484,11 @@ public class GameManager extends NovaModule implements Listener {
 	 * 
 	 * @param mapFile        The {@link File} to read
 	 * @param worldDirectory The directory containing the worlds
+	 * @param owner          The {@link Game} owner of the map
 	 * @return <code>true</code> on success
 	 * @since 2.0.0
 	 */
-	public boolean readMapFromFile(File mapFile, File worldDirectory) {
+	public boolean readMapFromFile(File mapFile, File worldDirectory, Game owner) {
 		try {
 			Log.info("GameManager", "Reading map from file " + mapFile.getName());
 
@@ -486,7 +512,7 @@ public class GameManager extends NovaModule implements Listener {
 				Log.warn("GameManager", "Map " + mapFile.getAbsolutePath() + " does not have a loader parmaeter. Attemping to use legacy loader instead");
 			}
 
-			GameMapData map = reader.readMap(json, worldDirectory);// this.readMap(new JSONObject(data), worldDirectory);
+			GameMapData map = reader.readMap(json, worldDirectory, owner);// this.readMap(new JSONObject(data), worldDirectory);
 
 			if (map != null) {
 				this.loadedMaps.put(map.getMapName(), map);
@@ -509,18 +535,19 @@ public class GameManager extends NovaModule implements Listener {
 	 * {@link MapSelector} defined by {@link GameManager#getMapSelector()}
 	 * <p>
 	 * This is the delayed version of
-	 * {@link GameManager#readMapFromFile(File, File)}, this will wait for the
+	 * {@link GameManager#readMapFromFile(File, File, Game)}, this will wait for the
 	 * server to load so that modules from external plugins can be used in the game
 	 * 
 	 * @param mapFile        The {@link File} to read
 	 * @param worldDirectory The directory containing the worlds
+	 * @param owner          The {@link Game} owner of the map
 	 * @since 2.0.0
 	 */
-	public void readMapFromFileDelayed(File mapFile, File worldDirectory) {
+	public void readMapFromFileDelayed(File mapFile, File worldDirectory, Game owner) {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				readMapFromFileDelayed(mapFile, worldDirectory);
+				readMapFromFile(mapFile, worldDirectory, owner);
 			}
 		}.runTaskLater(NovaCore.getInstance(), 0L);
 	}
@@ -534,13 +561,42 @@ public class GameManager extends NovaModule implements Listener {
 		return activeGame;
 	}
 
+
 	/**
-	 * Check if a game is loaded
+	 * Get the list of registered {@link Game}s
+	 *
+	 * @return List of registered {@link Game}s
+	 */
+	public List<Game> getRegisteredGames() {
+		return registeredGames;
+	}
+
+	/**
+	 * Check if there is a loaded Game
 	 * 
 	 * @return <code>true</code> if a game has been loaded
 	 */
-	public boolean hasGame() {
+	public boolean hasActiveGame() {
 		return this.activeGame != null;
+	}
+
+	/**
+	 * Check if there is a registered Game
+	 *
+	 * @return <code>true</code> if a game has been registered
+	 */
+	public boolean hasRegisteredGame() {
+		return !registeredGames.isEmpty();
+	}
+
+
+	/**
+	 * Check if a Game has been registered
+	 * @param game The {@link Game} to check
+	 * @return <code>true</code> if game is registered
+	 */
+	public boolean hasGame(Game game) {
+		return registeredGames.stream().anyMatch(g -> g.equals(game));
 	}
 
 	/**
@@ -550,7 +606,7 @@ public class GameManager extends NovaModule implements Listener {
 	 * @return <code>true</code> on success been added
 	 */
 	public boolean loadGame(Game game) {
-		if (this.hasGame()) {
+		if (this.hasActiveGame()) {
 			Log.warn("GameManager", "attempted to call loadGame() while already having a game loaded");
 			return false;
 		}
@@ -567,6 +623,69 @@ public class GameManager extends NovaModule implements Listener {
 		Bukkit.getServer().getPluginManager().callEvent(new GameLoadedEvent(activeGame));
 
 		return true;
+	}
+
+	/**
+	 * Register a {@link Game}
+	 *
+	 * @param game The game to be registered
+	 * @return <code>true</code> on success
+	 */
+	public boolean registerGame(Game game) {
+		if (hasGame(game)) {
+			Log.warn("GameManager", "attempted to call registerGame() while already having the game \"" + game.getName() + "\"");
+			return false;
+		}
+		Log.info("GameManager", "Registering game " + game.getName());
+		registeredGames.add(game);
+		return true;
+	}
+
+	/**
+	 * Sets the active {@link Game}
+	 *
+	 * @param game The {@link Game} to set
+	 * @return <code>true</code> if successful on setting active game
+	 */
+	public boolean setActiveGame(Game game) {
+		if (activeGame.isRunning()) {
+			Log.warn("GameManager", "There is a game already running.");
+			return false;
+		}
+		if (registeredGames.contains(game)) {
+			reset();
+			loadGame(game);
+			Bukkit.getOnlinePlayers().forEach(player -> {
+				if (player.getOpenInventory().getTopInventory().getHolder() instanceof MapVoteInventoryHolder) {
+					player.closeInventory();
+				}
+			});
+			countdown.cancelCountdown();
+			return true;
+		} else {
+			Log.warn("GameManager", "Couldn't find game.");
+			return false;
+		}
+	}
+
+	/**
+	 * Sets the active {@link Game}
+	 *
+	 * @param gameName The name of the game
+	 * @return <code>true</code> if successful on setting active game
+	 */
+	public boolean setActiveGame(String gameName) {
+		if (registeredGames.stream().anyMatch(game -> game.getName().equals(gameName))) {
+			Game game = registeredGames.stream().filter(g -> g.getName().equals(gameName)).findFirst().orElse(null);
+			if (game == null) {
+				Log.warn("GameManager", "Couldn't find game with sent game class.");
+				return false;
+			}
+			return setActiveGame(game);
+		} else {
+			Log.warn("GameManager", "Couldn't find game with sent game class.");
+			return false;
+		}
 	}
 
 	@Override
@@ -596,6 +715,7 @@ public class GameManager extends NovaModule implements Listener {
 
 			activeGame.onUnload();
 		}
+		activeGame = null;
 
 		combatTagCountdownTask.stop();
 
@@ -635,6 +755,7 @@ public class GameManager extends NovaModule implements Listener {
 
 			Log.debug("GameManager", "Calling start on " + activeGame.getClass().getName());
 			activeGame.startGame();
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			Log.fatal("GameManager", "Caught exception while starting game. " + e.getClass().getName() + " " + e.getMessage());
@@ -670,7 +791,7 @@ public class GameManager extends NovaModule implements Listener {
 	 *         <code>false</code> or if not game has been loaded
 	 */
 	public boolean endGame(GameEndReason reason) {
-		if (hasGame()) {
+		if (hasActiveGame()) {
 			return activeGame.endGame(reason);
 		}
 		return false;
@@ -806,7 +927,7 @@ public class GameManager extends NovaModule implements Listener {
 	 * @return <code>true</code> if the player was tagged
 	 */
 	public boolean combatTagPlayer(Player player, boolean showMessage) {
-		if (hasGame()) {
+		if (hasActiveGame()) {
 			if (getActiveGame().hasStarted()) {
 				combatTaggedPlayers.put(player.getUniqueId(), combatTaggingTime);
 				if (showMessage) {
@@ -938,7 +1059,7 @@ public class GameManager extends NovaModule implements Listener {
 	public void onPlayerDeath(PlayerDeathEvent e) {
 		Player player = e.getEntity();
 
-		if (hasGame()) {
+		if (hasActiveGame()) {
 			if (getActiveGame().hasStarted()) {
 				if (!showDeathMessage) {
 					e.setDeathMessage(null);
@@ -1008,7 +1129,7 @@ public class GameManager extends NovaModule implements Listener {
 		Player p = e.getPlayer();
 
 		if (callOnRespawn.contains(p.getUniqueId())) {
-			if (hasGame()) {
+			if (hasActiveGame()) {
 				getActiveGame().onPlayerRespawn(p);
 				getActiveGame().onPlayerRespawnEvent(e);
 				callOnRespawn.remove(p.getUniqueId());
@@ -1018,7 +1139,7 @@ public class GameManager extends NovaModule implements Listener {
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
-		if (hasGame()) {
+		if (hasActiveGame()) {
 			if (activeGame.hasStarted()) {
 				if (e.getEntity() instanceof Player) {
 					UUID damagerUuid = null;
@@ -1063,7 +1184,7 @@ public class GameManager extends NovaModule implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	public void onEntityDamageByEntityMonitor(EntityDamageByEntityEvent e) {
-		if (hasGame()) {
+		if (hasActiveGame()) {
 			if (activeGame.hasStarted()) {
 				if (e.getEntity() instanceof Player) {
 					UUID damagerUuid = null;
@@ -1125,7 +1246,7 @@ public class GameManager extends NovaModule implements Listener {
 		Player player = e.getPlayer();
 		callOnRespawn.remove(player.getUniqueId());
 
-		if (hasGame()) {
+		if (hasActiveGame()) {
 			if (activeGame.hasEnded()) {
 				return;
 			}
@@ -1186,7 +1307,15 @@ public class GameManager extends NovaModule implements Listener {
 	}
 
 	public void reset() {
+		if (activeGame != null) {
+			if (activeGame instanceof Listener) {
+				HandlerList.unregisterAll((Listener) activeGame);
+			}
+			activeGame.onUnload();
+		}
 		this.activeGame = null;
+
+
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL)

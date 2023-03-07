@@ -18,7 +18,7 @@ public abstract class MapSelector {
 	 * @return {@link List} with {@link GameMapData}
 	 */
 	public List<GameMapData> getMaps() {
-		return GameManager.getInstance().getAllLoadedMaps().values().stream().collect(Collectors.toList());
+		return GameManager.getInstance().getLoadedMapsForActiveGame();
 	}
 
 	/**

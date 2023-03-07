@@ -63,7 +63,7 @@ public class GameEngineDebugTriggers {
 			@Override
 			public void onExecute(CommandSender sender, String commandLabel, String[] args) {
 				if (GameManager.getInstance().isEnabled()) {
-					if (GameManager.getInstance().hasGame()) {
+					if (GameManager.getInstance().hasActiveGame()) {
 						if (GameManager.getInstance().getActiveGame() instanceof MapGame) {
 							MapGame game = (MapGame) GameManager.getInstance().getActiveGame();
 
@@ -114,7 +114,7 @@ public class GameEngineDebugTriggers {
 			@Override
 			public void onExecute(CommandSender sender, String commandLabel, String[] args) {
 				if (GameManager.getInstance().isEnabled()) {
-					if (GameManager.getInstance().hasGame()) {
+					if (GameManager.getInstance().hasActiveGame()) {
 						if (args.length > 0) {
 							String flagName = args[0];
 							try {
@@ -169,7 +169,7 @@ public class GameEngineDebugTriggers {
 			@Override
 			public void onExecute(CommandSender sender, String commandLabel, String[] args) {
 				if (GameManager.getInstance().isEnabled()) {
-					if (GameManager.getInstance().hasGame()) {
+					if (GameManager.getInstance().hasActiveGame()) {
 						if (args.length > 0) {
 							Player player = Bukkit.getServer().getPlayer(args[0]);
 							if (player != null) {
