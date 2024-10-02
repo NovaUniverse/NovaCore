@@ -8,9 +8,12 @@ import org.bukkit.Bukkit;
  * @author Zeeraa
  */
 public class NovaCoreAbstraction {
-	public static final String getNMSVersion() {
+
+	public static String getNMSVersion() {
 		String packageName = Bukkit.getServer().getClass().getPackage().getName();
 
-		return packageName.substring(packageName.lastIndexOf('.') + 1);
+		String version = packageName.substring(packageName.lastIndexOf('.') + 1);
+		if (version.equals("craftbukkit.")) version = ""; // Using paper on latest versions
+		return version;
 	}
 }
