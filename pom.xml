@@ -31,11 +31,11 @@
 
 	<distributionManagement>
 		<snapshotRepository>
-			<id>novauniverse2</id>
+			<id>novauniverse</id>
 			<url>https://nexus2.novauniverse.net/repository/novauniverse/</url>
 		</snapshotRepository>
 		<repository>
-			<id>novauniverse2</id>
+			<id>novauniverse</id>
 			<url>https://nexus2.novauniverse.net/repository/novauniverse/</url>
 		</repository>
 	</distributionManagement>
