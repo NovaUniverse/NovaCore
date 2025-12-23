@@ -5,6 +5,7 @@ import javax.annotation.Nonnull;
 import org.bukkit.entity.Entity;
 
 import net.citizensnpcs.api.npc.NPC;
+import net.citizensnpcs.trait.SkinTrait;
 import net.zeeraa.novacore.spigot.NovaCore;
 
 public class CitizensUtils {
@@ -44,8 +45,8 @@ public class CitizensUtils {
 	 * @param npc      The npc to change the skin of
 	 * @param username The username of the player to get the skin from
 	 */
-	@SuppressWarnings("deprecation")
 	public void setSkin(@Nonnull NPC npc, @Nonnull String username) {
-		npc.data().setPersistent(NPC.PLAYER_SKIN_UUID_METADATA, username);
+		SkinTrait skinTrait = npc.getOrAddTrait(SkinTrait.class);
+		skinTrait.setSkinName(username);
 	}
 }

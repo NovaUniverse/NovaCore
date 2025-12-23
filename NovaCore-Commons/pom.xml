@@ -74,10 +74,15 @@
 		</repository>
 
 		<repository>
+			<id>spigot-repo</id>
+			<url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
+		</repository>
+
+		<repository>
 			<id>novauniverse2</id>
 			<url>https://nexus2.novauniverse.net/repository/novauniverse-group/</url>
 		</repository>
-		
+
 		<repository>
 			<id>novauniverse-thirdparty</id>
 			<url>https://nexus2.novauniverse.net/repository/thridparty/</url>
@@ -86,25 +91,25 @@
 
 	<dependencies>
 		<dependency>
-            <groupId>net.md-5</groupId>
-            <artifactId>bungeecord-api</artifactId>
-            <version>1.20-R0.2</version>
-            <type>jar</type>
-            <scope>provided</scope>
-        </dependency>
-        
-        <dependency>
-            <groupId>net.md-5</groupId>
-            <artifactId>bungeecord-api</artifactId>
-            <version>1.20-R0.2</version>
-            <type>javadoc</type>
-            <scope>provided</scope>
-        </dependency>
+			<groupId>net.md-5</groupId>
+			<artifactId>bungeecord-api</artifactId>
+			<version>1.20-R0.2</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>net.md-5</groupId>
+			<artifactId>bungeecord-api</artifactId>
+			<version>1.20-R0.2</version>
+			<type>javadoc</type>
+			<scope>provided</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot-api</artifactId>
-			<version>1.8-R0.1-SNAPSHOT</version>
+			<version>1.8.8-R0.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 
