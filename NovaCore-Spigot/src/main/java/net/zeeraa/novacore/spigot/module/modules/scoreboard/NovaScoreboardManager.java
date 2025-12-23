@@ -293,56 +293,39 @@ public class NovaScoreboardManager extends NovaModule implements Listener {
 
 	public static class Utils {
 		public static NamedTextColor ChatColorToNamedTextColor(ChatColor color) {
-			switch (color) {
-			case AQUA:
+			if (color == ChatColor.AQUA) {
 				return NamedTextColor.AQUA;
-
-			case BLACK:
+			} else if (color == ChatColor.BLACK) {
 				return NamedTextColor.BLACK;
-
-			case BLUE:
+			} else if (color == ChatColor.BLUE) {
 				return NamedTextColor.BLUE;
-
-			case DARK_AQUA:
+			} else if (color == ChatColor.DARK_AQUA) {
 				return NamedTextColor.DARK_AQUA;
-
-			case DARK_BLUE:
+			} else if (color == ChatColor.DARK_BLUE) {
 				return NamedTextColor.DARK_BLUE;
-
-			case DARK_GRAY:
+			} else if (color == ChatColor.DARK_GRAY) {
 				return NamedTextColor.DARK_GRAY;
-
-			case DARK_GREEN:
+			} else if (color == ChatColor.DARK_GREEN) {
 				return NamedTextColor.DARK_GREEN;
-
-			case DARK_PURPLE:
+			} else if (color == ChatColor.DARK_PURPLE) {
 				return NamedTextColor.DARK_PURPLE;
-
-			case DARK_RED:
+			} else if (color == ChatColor.DARK_RED) {
 				return NamedTextColor.DARK_RED;
-
-			case GOLD:
+			} else if (color == ChatColor.GOLD) {
 				return NamedTextColor.GOLD;
-
-			case GRAY:
+			} else if (color == ChatColor.GRAY) {
 				return NamedTextColor.GRAY;
-
-			case GREEN:
+			} else if (color == ChatColor.GREEN) {
 				return NamedTextColor.GREEN;
-
-			case LIGHT_PURPLE:
+			} else if (color == ChatColor.LIGHT_PURPLE) {
 				return NamedTextColor.LIGHT_PURPLE;
-
-			case RED:
+			} else if (color == ChatColor.RED) {
 				return NamedTextColor.RED;
-
-			case WHITE:
+			} else if (color == ChatColor.WHITE) {
 				return NamedTextColor.WHITE;
-
-			case YELLOW:
+			} else if (color == ChatColor.YELLOW) {
 				return NamedTextColor.YELLOW;
-
-			default:
+			} else {
 				Log.warn("NovaScoreboardManager", "Invalid color selected: " + color.name());
 				return NamedTextColor.WHITE;
 			}

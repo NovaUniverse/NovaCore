@@ -96,40 +96,39 @@ public class RGBColorData {
 	}
 
 	public Color getColorByChatColor(@Nonnull net.md_5.bungee.api.ChatColor color) {
-		switch (color) {
-		case BLACK:
+		if (color == net.md_5.bungee.api.ChatColor.BLACK) {
 			return Color.BLACK;
-		case DARK_BLUE:
+		} else if (color == net.md_5.bungee.api.ChatColor.DARK_BLUE) {
 			return Color.NAVY;
-		case DARK_GREEN:
+		} else if (color == net.md_5.bungee.api.ChatColor.DARK_GREEN) {
 			return Color.GREEN;
-		case DARK_AQUA:
+		} else if (color == net.md_5.bungee.api.ChatColor.DARK_AQUA) {
 			return Color.TEAL;
-		case DARK_RED:
+		} else if (color == net.md_5.bungee.api.ChatColor.DARK_RED) {
 			return Color.MAROON;
-		case DARK_PURPLE:
+		} else if (color == net.md_5.bungee.api.ChatColor.DARK_PURPLE) {
 			return Color.PURPLE;
-		case GOLD:
+		} else if (color == net.md_5.bungee.api.ChatColor.GOLD) {
 			return Color.ORANGE;
-		case GRAY:
+		} else if (color == net.md_5.bungee.api.ChatColor.GRAY) {
 			return Color.SILVER;
-		case DARK_GRAY:
+		} else if (color == net.md_5.bungee.api.ChatColor.DARK_GRAY) {
 			return Color.GRAY;
-		case BLUE:
+		} else if (color == net.md_5.bungee.api.ChatColor.BLUE) {
 			return Color.BLUE;
-		case GREEN:
+		} else if (color == net.md_5.bungee.api.ChatColor.GREEN) {
 			return Color.LIME;
-		case AQUA:
+		} else if (color == net.md_5.bungee.api.ChatColor.AQUA) {
 			return Color.AQUA;
-		case RED:
+		} else if (color == net.md_5.bungee.api.ChatColor.RED) {
 			return Color.RED;
-		case LIGHT_PURPLE:
+		} else if (color == net.md_5.bungee.api.ChatColor.LIGHT_PURPLE) {
 			return Color.FUCHSIA;
-		case YELLOW:
+		} else if (color == net.md_5.bungee.api.ChatColor.YELLOW) {
 			return Color.YELLOW;
-		case WHITE:
+		} else if (color == net.md_5.bungee.api.ChatColor.WHITE) {
 			return Color.WHITE;
-		default:
+		} else {
 			return Color.WHITE;
 		}
 	}

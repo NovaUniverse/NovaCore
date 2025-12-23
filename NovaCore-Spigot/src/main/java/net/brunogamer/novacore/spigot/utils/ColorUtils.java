@@ -40,39 +40,36 @@ public class ColorUtils {
         }
     }
     public static DyeColor getDyeColorByChatColor(ChatColor color) {
-        switch (color) {
-            case BLACK:
-                return DyeColor.BLACK;
-            case DARK_BLUE:
-            case BLUE:
-                return DyeColor.BLUE;
-            case DARK_GREEN:
-                return DyeColor.GREEN;
-            case DARK_AQUA:
-                return DyeColor.CYAN;
-            case DARK_RED:
-            case RED:
-                return DyeColor.RED;
-            case DARK_PURPLE:
-                return DyeColor.PURPLE;
-            case GOLD:
-                return DyeColor.ORANGE;
-            case GRAY:
-                return DyeColor.SILVER;
-            case DARK_GRAY:
-                return DyeColor.GRAY;
-            case GREEN:
-                return DyeColor.LIME;
-            case AQUA:
-                return DyeColor.LIGHT_BLUE;
-            case LIGHT_PURPLE:
-                return DyeColor.PINK;
-            case YELLOW:
-                return DyeColor.YELLOW;
-            case WHITE:
-                return DyeColor.WHITE;
-            default:
-                return DyeColor.WHITE;
+        if (color == ChatColor.BLACK) {
+            return DyeColor.BLACK;
+        } else if (color == ChatColor.DARK_BLUE || color == ChatColor.BLUE) {
+            return DyeColor.BLUE;
+        } else if (color == ChatColor.DARK_GREEN) {
+            return DyeColor.GREEN;
+        } else if (color == ChatColor.DARK_AQUA) {
+            return DyeColor.CYAN;
+        } else if (color == ChatColor.DARK_RED || color == ChatColor.RED) {
+            return DyeColor.RED;
+        } else if (color == ChatColor.DARK_PURPLE) {
+            return DyeColor.PURPLE;
+        } else if (color == ChatColor.GOLD) {
+            return DyeColor.ORANGE;
+        } else if (color == ChatColor.GRAY) {
+            return DyeColor.SILVER;
+        } else if (color == ChatColor.DARK_GRAY) {
+            return DyeColor.GRAY;
+        } else if (color == ChatColor.GREEN) {
+            return DyeColor.LIME;
+        } else if (color == ChatColor.AQUA) {
+            return DyeColor.LIGHT_BLUE;
+        } else if (color == ChatColor.LIGHT_PURPLE) {
+            return DyeColor.PINK;
+        } else if (color == ChatColor.YELLOW) {
+            return DyeColor.YELLOW;
+        } else if (color == ChatColor.WHITE) {
+            return DyeColor.WHITE;
+        } else {
+            return DyeColor.WHITE;
         }
     }
     public static Color getColorByDyeColor(DyeColor color) {
@@ -111,41 +108,40 @@ public class ColorUtils {
         }
     }
     public static Color getColorByChatColor(ChatColor color) {
-        switch (color) {
-            case BLACK:
-                return Color.BLACK;
-            case DARK_BLUE:
-                return Color.NAVY;
-            case BLUE:
-                return Color.BLUE;
-            case DARK_GREEN:
-                return Color.GREEN;
-            case DARK_AQUA:
-                return Color.TEAL;
-            case DARK_RED:
-                return Color.MAROON;
-            case RED:
-                return Color.RED;
-            case DARK_PURPLE:
-                return Color.PURPLE;
-            case GOLD:
-                return Color.ORANGE;
-            case GRAY:
-                return Color.SILVER;
-            case DARK_GRAY:
-                return Color.GRAY;
-            case GREEN:
-                return Color.LIME;
-            case AQUA:
-                return Color.AQUA;
-            case LIGHT_PURPLE:
-                return Color.FUCHSIA;
-            case YELLOW:
-                return Color.YELLOW;
-            case WHITE:
-                return Color.WHITE;
-            default:
-                return Color.WHITE;
+        if (color == ChatColor.BLACK) {
+            return Color.BLACK;
+        } else if (color == ChatColor.DARK_BLUE) {
+            return Color.NAVY;
+        } else if (color == ChatColor.BLUE) {
+            return Color.BLUE;
+        } else if (color == ChatColor.DARK_GREEN) {
+            return Color.GREEN;
+        } else if (color == ChatColor.DARK_AQUA) {
+            return Color.TEAL;
+        } else if (color == ChatColor.DARK_RED) {
+            return Color.MAROON;
+        } else if (color == ChatColor.RED) {
+            return Color.RED;
+        } else if (color == ChatColor.DARK_PURPLE) {
+            return Color.PURPLE;
+        } else if (color == ChatColor.GOLD) {
+            return Color.ORANGE;
+        } else if (color == ChatColor.GRAY) {
+            return Color.SILVER;
+        } else if (color == ChatColor.DARK_GRAY) {
+            return Color.GRAY;
+        } else if (color == ChatColor.GREEN) {
+            return Color.LIME;
+        } else if (color == ChatColor.AQUA) {
+            return Color.AQUA;
+        } else if (color == ChatColor.LIGHT_PURPLE) {
+            return Color.FUCHSIA;
+        } else if (color == ChatColor.YELLOW) {
+            return Color.YELLOW;
+        } else if (color == ChatColor.WHITE) {
+            return Color.WHITE;
+        } else {
+            return Color.WHITE;
         }
     }
     
