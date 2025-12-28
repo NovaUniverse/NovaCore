@@ -119,6 +119,10 @@ public abstract class BaseVersionIndependentUtilImplementation1_16Plus extends V
 			return new ItemStack(Material.PLAYER_HEAD, 1);
 		}
 
+		if (name == null) {
+			name = "Player";
+		}
+
 		GameProfile profile = new GameProfile(uuid, name);
 		PropertyMap propertyMap = profile.getProperties();
 		if (propertyMap == null) {
@@ -176,8 +180,7 @@ public abstract class BaseVersionIndependentUtilImplementation1_16Plus extends V
 
 	@Override
 	public void resetEntityMaxHealth(LivingEntity livingEntity) {
-		livingEntity.getAttribute(Attribute.GENERIC_MAX_HEALTH)
-				.setBaseValue(livingEntity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getDefaultValue());
+		livingEntity.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(livingEntity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getDefaultValue());
 	}
 
 	@Override
@@ -316,8 +319,7 @@ public abstract class BaseVersionIndependentUtilImplementation1_16Plus extends V
 	public String colorizeGradient(Color[] colors, String message) {
 		StringBuilder builder = new StringBuilder();
 		for (int i = 0; i < message.length(); i++) {
-			builder.append(ChatColor.of(new Color(colors[i].getRed(), colors[i].getGreen(), colors[i].getBlue())))
-					.append(message.toCharArray()[i]);
+			builder.append(ChatColor.of(new Color(colors[i].getRed(), colors[i].getGreen(), colors[i].getBlue()))).append(message.toCharArray()[i]);
 		}
 		return builder.toString();
 	}

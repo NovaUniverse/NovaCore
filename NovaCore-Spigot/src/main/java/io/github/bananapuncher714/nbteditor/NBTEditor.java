@@ -1003,7 +1003,7 @@ public final class NBTEditor {
 	 */
 	public static void setSkullTexture(Block block, String texture) {
 		try {
-			Object profile = getConstructor(ClassId.GameProfile).newInstance(UUID.randomUUID(), null);
+			Object profile = getConstructor(ClassId.GameProfile).newInstance(UUID.randomUUID(), "Player");
 			Object propertyMap = getMethod(MethodId.getProperties).invoke(profile);
 			Object textureProperty = getConstructor(ClassId.Property).newInstance("textures", new String(Base64.getEncoder().encode(String.format("{textures:{SKIN:{\"url\":\"%s\"}}}", texture).getBytes())));
 			getMethod(MethodId.putProperty).invoke(propertyMap, "textures", textureProperty);
